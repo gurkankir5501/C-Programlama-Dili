@@ -1,0 +1,462 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+	char sehirler[100]={'A','B','C','D','E','F','G','H','I','J','K','L','M','N','P','Q','R'};
+	
+	int n=17;	/*yeni eklenecek sehrin yerini g�steriyor */	
+	int komsulukiliskisi[100][100]={
+					{0,1,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0},
+					{1,0,1,0,0,0,0,0,1,1,0,0,0,0,0,0,1},
+					{0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1},
+					{1,0,1,0,1,0,0,0,0,0,0,0,0,0,1,1,0},
+					{0,0,0,1,0,1,0,0,0,0,0,0,0,1,1,0,0},
+					{1,0,0,0,1,0,1,0,0,0,0,0,1,1,0,0,0},
+					{0,0,0,0,0,1,0,1,0,0,0,1,1,0,0,0,0},
+					{1,0,0,0,0,0,1,0,1,0,1,1,0,0,0,0,0},
+					{0,1,0,0,0,0,0,1,0,1,1,0,0,0,0,0,0},
+					{0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0},
+					{0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0},
+					{0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0},
+					{0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0},
+					{0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0},
+					{0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0},
+					{0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
+					{0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+					};
+
+struct node{
+	char sehir;
+	char komsular[100];
+	int sayac;
+	struct node *next;
+};	
+
+struct node* ilkDugum=NULL;
+struct node* gecici;
+struct node* gecici2;
+struct node* gecici3;
+	
+		
+void sehirEkle(char sehir,int komsuSayisi){
+	
+	sehirler[n]=sehir;
+		
+	int i=0;
+	while(i<=n){
+			
+		printf("%c - ",sehirler[i]);
+		i=i+1;
+	}
+	printf(" sehir basari ile eklendi : \n");
+		
+	
+	int j=1;
+	while(j<=komsuSayisi){
+		printf("%d . komsuyu giriniz :",j);
+		char komsular;
+		scanf("%s",&komsular);
+		int k=0;
+		while(k<n){
+			
+			if (komsular==sehirler[k]){
+				
+				komsulukiliskisi[n][k]=1;
+				komsulukiliskisi[k][n]=1;
+			}
+			if(komsulukiliskisi[n][k]!=1 && komsulukiliskisi[k][n]!=1){
+				
+				komsulukiliskisi[n][k]=0;
+				komsulukiliskisi[k][n]=0;
+			}	
+			
+			k=k+1;		
+		}
+	  j=j+1;
+	}
+	n=n+1;
+}
+
+void stackSehirEkle(char sehir){
+	
+	struct node* yeniDugum=(struct node*)malloc(sizeof(struct node));
+	yeniDugum->sehir=sehir;
+	yeniDugum->sayac=0;
+	yeniDugum->next=NULL;
+	
+	
+	
+	if(ilkDugum==NULL){
+		
+		ilkDugum=yeniDugum;
+		
+	}
+	else{
+		gecici=ilkDugum;
+		ilkDugum=yeniDugum;
+		ilkDugum->next=gecici;
+		
+	}
+	
+}
+
+void stackSehirSil(){
+	if(ilkDugum==NULL){
+		
+		printf("stack bostur ");
+	}
+	else{
+		
+		gecici=ilkDugum->next;
+		free(ilkDugum);
+		ilkDugum=gecici;
+	}
+	
+}
+
+void stackYazdir(){
+
+	if (ilkDugum==NULL){
+	
+		printf("stack bos");
+	}
+	else{
+		
+		gecici2=ilkDugum;
+		while(gecici2->next->next !=NULL){
+			
+			printf("%c=>",gecici2->sehir);
+			gecici2=gecici2->next;
+						
+		}
+		printf("%c",gecici2->sehir);
+		
+	}
+	
+}
+
+
+int ziyaretEdildiMi(char gidilecekSehir){
+	
+	int var=0;
+	gecici2=ilkDugum;
+	while(gecici2->next!=NULL){
+	
+		if(gecici2->sehir==gidilecekSehir){
+			
+			var=1;
+		}
+		gecici2=gecici2->next;
+	}
+	return var;
+}
+
+void komsulukVarmi(char suankiSehir,char sehirler[],int komsulukiliskisi[100][100]){
+	
+	int i=0;
+	while(i<n){
+		
+		if(sehirler[i]==suankiSehir){
+			
+			break;
+		}
+		i=i+1;
+	}
+	int j=0;
+	while(j<n){
+		
+		if(komsulukiliskisi[i][j]==1){
+			
+			ilkDugum->komsular[ilkDugum->sayac]=sehirler[j];
+			ilkDugum->sayac=(ilkDugum->sayac) + 1;
+		}
+		j=j+1;
+	}
+
+}
+int yolSayisi=1;
+/*
+void ikiSehirArasiyollar(char ilksehir,char sonSehir,char sehirler[],int komsulukiliskisi[100][100]){
+	
+	stackSehirEkle(ilksehir);
+	komsulukVarmi(ilksehir,sehirler,komsulukiliskisi);
+	char foo;
+	
+	int i=0;
+	while(i<ilkDugum->sayac){
+	
+		foo=ilkDugum->komsular[i];
+		
+		if(ziyaretEdildiMi(foo)==0){
+			if(foo==sonSehir){
+				
+				stackSehirEkle(foo);
+				printf("%d. yol ",yolSayisi);
+				stackYazdir();
+				printf("\n");
+				stackSehirSil();
+				yolSayisi=yolSayisi+1;
+			}
+			else{
+				
+				ikiSehirArasiyollar(foo,sonSehir,sehirler,komsulukiliskisi);
+			}
+		}
+		i=i+1;
+	}
+	stackSehirSil();
+	
+}
+*/
+
+int stackYazdir2(){
+	
+	int a=0;
+	
+	if (ilkDugum==NULL){
+	
+		printf("stack bos");
+	}
+	else{
+		
+		
+		gecici2=ilkDugum;
+		
+		while(gecici2->next!=NULL){
+			
+			
+			gecici2=gecici2->next;
+			
+			a=a+1;
+		}
+		a=a+1;
+	}
+	
+	return a;
+}
+
+/*
+int enbuyuk=0;
+void stackYazdir3(){
+	
+	int b=0;
+	
+	if (ilkDugum==NULL){
+	
+		printf("stack bos");
+	}
+	else{
+		
+		
+		gecici2=ilkDugum;
+		
+		while(gecici2->next!=NULL){
+			
+			
+			gecici2=gecici2->next;
+			
+			b=b+1;
+		}
+		b=b+1;
+		if(enbuyuk<b){
+		
+			enbuyuk=b;
+		}
+	}
+	
+}
+
+*/
+int yolSayisi2=1;
+int yolSayisi3=1;
+void uzunYol(char ilksehir,char sonSehir,char sehirler[],int komsulukiliskisi[100][100],int secim){
+	
+	stackSehirEkle(ilksehir);
+	komsulukVarmi(ilksehir,sehirler,komsulukiliskisi);
+	char foo;
+	
+	int i=0;
+	while(i<ilkDugum->sayac){
+	
+		foo=ilkDugum->komsular[i];
+		
+		if(ziyaretEdildiMi(foo)==0){
+			
+			if(foo==sonSehir){
+				
+				
+				stackSehirEkle(foo);
+				
+				int a= stackYazdir2();
+				if(secim==2){
+					
+					
+					printf("%d. yol ",yolSayisi);
+					stackYazdir();
+					printf("\n");
+					yolSayisi=yolSayisi+1;
+			
+				}
+				
+				/*
+			 	if(a==enbuyuk-1&&secim==3){
+			
+					printf("%d. yol ",yolSayisi2);
+					stackYazdir();
+					printf("\n");
+					yolSayisi2=yolSayisi2+1;
+					break;
+				}
+				
+				*/
+				if(a==6 &&secim==4){
+				
+					
+					printf("%d. yol ",yolSayisi3);
+					stackYazdir();
+					printf("\n");
+					yolSayisi3=yolSayisi3+1;
+				}		
+				stackSehirSil();
+			}
+			else{
+				
+				uzunYol(foo,sonSehir,sehirler,komsulukiliskisi,secim);
+				
+			}
+			
+		}
+		i=i+1;
+	}
+	stackSehirSil();
+	
+}
+
+					
+int main(){
+	
+	while(1==1){
+		printf("sehir eklemek icin 1 basin \niki sehir arasi butun yollari goruntulemek icin 2'ye basin\n"
+				"iki sehir arasi en uzun yollari goruntulemek icin 3'e basin\n"
+				"iki sehir arasi uc komsu sehrin ziyaret edildigi yollari goruntulemek icin 4'e basin\n");
+				
+		printf("secim : ");
+		int secim;
+		scanf("%d",&secim);
+		printf("\n");
+		if(secim==1){
+			
+			printf("eklemek istediginiz sehiri giriniz : ");
+			char sehir;
+			scanf("%s",&sehir);
+			printf("bu sehrin kac adet komsu var ? : ");
+			int komsuSayisi;
+			scanf("%d",&komsuSayisi);
+			
+			sehirEkle(sehir,komsuSayisi);
+			
+			int k=0;
+			while(k<n){
+			
+				int l=0;
+				while(l<n){
+			
+				printf("%d ",komsulukiliskisi[k][l]);
+				l=l+1;
+				}
+				printf("\n");
+				k=k+1;
+			}
+		}
+		/*
+		else if(secim==2){
+			
+			stackSehirEkle(' ');
+			printf("Nereden =");
+			char x;
+			scanf("%s",&x);
+			
+			int m=0;
+			while(m<n){
+		
+				if(sehirler[m]==x){
+			
+					break;
+				}
+				m=m+1;
+			}
+			printf("Nereye =");
+			char y;
+			scanf("%s",&y);
+			
+			int z=0;
+			while(z<n){
+		
+				if(sehirler[z]==y){
+			
+					break;
+				}
+				z=z+1;
+			}
+			
+			ikiSehirArasiyollar(sehirler[z],sehirler[m],sehirler,komsulukiliskisi);
+			printf("toplam yol sayimiz %d'dir \n",yolSayisi-1);
+			stackSehirSil();
+			yolSayisi=1;
+		}
+		*/
+		else if(secim==2||secim==3||secim==4){
+			
+			
+			stackSehirEkle(' ');
+			printf("Nereden =");
+			char x;
+			scanf("%s",&x);
+			
+			int m=0;
+			while(m<n){
+		
+				if(sehirler[m]==x){
+			
+					break;
+				}
+				m=m+1;
+			}
+			printf("Nereye =");
+			char y;
+			scanf("%s",&y);
+			
+			int z=0;
+			while(z<n){
+		
+				if(sehirler[z]==y){
+			
+					break;
+				}
+				z=z+1;
+			}
+			
+			
+			uzunYol(sehirler[z],sehirler[m],sehirler,komsulukiliskisi,secim);
+			
+			
+			if(secim==3){
+				
+				printf("toplam yol sayimiz %d'dir \n",yolSayisi2-1);
+				
+			}
+			else if(secim==4){
+				
+				printf("toplam yol sayimiz %d'dir \n",yolSayisi3-1);
+			}
+			yolSayisi2=1;
+			yolSayisi3=1;
+			yolSayisi=1;
+			
+			stackSehirSil();
+		}
+	}
+		
+}
+
+
