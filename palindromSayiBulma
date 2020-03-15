@@ -1,0 +1,138 @@
+#include <stdio.h>
+
+
+char text[3000]={
+				"FourscoreandsevenyearsagoourfaathersbroughtforthonthiscontainentanewnationconceivedinzLibert"
+				"yanddedicatedtothepropositionthatallmenarecreatedequalNowweareengagedinagreahtcivilwartesti"
+				"ngwhetherthatnaptionoranynartionsoconceivedandsodedicatedcanlongendureWeareqmetonagreatb"
+				"attlefiemldoftzhatwarWehavecometodedicpateaportionofthatfieldasafinalrestingplaceforthosewhoh"
+				"eregavetheirlivesthatthatnationmightliveItisaltogetherfangandproperthatweshoulddothisButinalarg"
+				"ersensewecannotdedicatewecannotconsecratewecannothallowthisgroundThebravelmenlivingandde"
+				"adwhostruggledherehaveconsecrateditfaraboveourpoorponwertoaddordetractTgheworldadswfilllittl"
+				"enotlenorlongrememberwhatwesayherebutitcanneverforgetwhattheydidhereItisforusthelivingrathert"
+				"obededicatedheretotheulnfinishedworkwhichtheywhofoughtherehavethusfarsonoblyadvancedItisrat"
+				"herforustobeherededicatedtothegreattdafskremainingbeforeusthatfromthesehonoreddeadwetakeinc"
+				"reaseddevotiontothatcauseforwhichtheygavethelastpfullmeasureofdevotionthatweherehighlyresolve"
+				"thatthesedeadshallnothavediedinvainthatthisnationunsderGodshallhaveanewbirthoffreedomandthat"
+				"governmentofthepeoplebythepeopleforthepeopleshallnotperishfromtheearth"
+				};
+				
+int upper;
+int lower=0;
+int i=0;
+void foo(){
+	
+	int fark = 'a' - 'A';							
+	if (text[lower] >= 'A' && text[lower] <= 'Z'){
+		
+		text[lower] += fark;
+	}
+		
+	while(sizeof(text)>i){
+													
+		if (text[i] >= 'a' && text[i] <= 'z'){			
+		
+			i=i+1;
+		}
+		else{
+			upper=i;
+			break;
+		}
+	}
+	
+}
+
+void baz(){
+	
+	
+	int temp=lower+1;
+	
+	while(lower<upper){
+		
+		if(text[lower]==text[temp]){		
+			
+			if(bar(lower,temp)!=0){					
+				
+				view(lower,temp);
+				
+				lower=temp+1;
+				temp=lower+1;
+			}
+			else{
+				
+				lower=lower+1;
+				temp=lower+1;
+			}
+		}
+		else if(temp==upper){
+			
+			lower=lower+1;
+			temp=lower+1;
+		}
+		else if(text[lower]!=text[temp]){
+			
+			temp=temp+1;
+		}
+	}
+	
+	lower=upper;
+	
+}
+
+int bar(int lower,int temp){
+	
+	int x=lower;
+	int y=temp;
+	
+	int loop =((y-x)/2)+1;
+	
+	int j=0;
+	while(loop>j){
+		
+		if(text[x]==text[y]){
+			
+			x=x+1;
+			y=y-1;
+		}
+		else{
+			
+			return 0;
+			break;
+		}
+		
+		j=j+1;
+	}	
+	
+	
+}
+
+int view(int lower,int temp){
+	
+	int x=lower;
+	int y=temp;
+	int loop=y-x+1;
+	
+	int j=0;								
+	while(loop>j){
+		
+		printf("%c",text[x]);
+		
+		x=x+1;
+		j=j+1;
+	}
+	printf("\n");
+	
+	
+}
+
+
+				
+int main(){
+	
+	while(text[upper]!='\0'){
+		
+		foo(); 
+		baz(); 
+	};
+	
+};
