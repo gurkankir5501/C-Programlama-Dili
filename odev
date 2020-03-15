@@ -1,0 +1,53 @@
+#include <stdio.h>
+
+int number[30]={3,4,9,14,15,19,28,37,47,50,54,56,59,61,70,73,78,81,92,95,97,99};
+
+
+int temp=0;
+int foo(total){
+	
+	int k=0;
+	while(number[k]!='\0'){
+		
+		if(total==number[k]){
+					
+			
+			temp=temp+1;
+		}
+		k=k+1;
+	}
+}
+
+int bar(int i,int j){
+	
+	int total=number[i]+number[j];
+	
+	int k=j+1;
+	while(number[k]!='\0'){
+		
+		total=total+number[k];
+		foo(total);
+		k=k+1;
+	}
+}
+
+
+int main(){
+	
+	int total=0;
+	int i=0;
+	while(number[i]!='\0'){  
+		
+		int j=i+1;
+		while(number[j]!='\0'){
+			
+			total=number[i]+number[j];
+			
+			foo(total);
+			bar(i,j);
+			j=j+1;
+		}
+		i=i+1;
+	}
+	printf("answer : %d",temp);
+}
