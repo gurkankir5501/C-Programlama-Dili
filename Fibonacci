@@ -1,0 +1,48 @@
+#include <stdio.h>
+
+int step1(int number){					/*    step 1    */
+	
+	int firstNumber=0;
+	int secondNumber=1;
+	int thirdNumber=0;
+	
+	while(secondNumber<number){
+	
+		thirdNumber=secondNumber+firstNumber;
+		firstNumber=secondNumber;
+		secondNumber=thirdNumber;
+	}
+	printf("Smallest prime fibonacci number %d \n",secondNumber);
+	return secondNumber;
+}
+
+int step2(int X){						/*   step 2   */
+	
+	int total=0;
+	int temp=1;
+	int i=2;
+	while(X>1){
+		
+		if(X%i==0){
+			
+			
+			X=X/i;
+			if(temp%i!=0){
+				total=total+i;
+			}
+			temp=temp*i;
+		}
+		else{
+			
+			i=i+1;
+		}
+	}
+	printf("sum of main divisors: %d ",total);
+}
+
+int main(){
+	int number=227000;
+	int X =step1(number);
+	step2(X+1);
+	
+}
